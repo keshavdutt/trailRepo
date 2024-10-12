@@ -160,16 +160,19 @@ export const DATA = {
         {
           type: 'subheading',
           title: "1. What is a Stack?",
+          image: 'https://picsum.photos/seed/picsum/450/300',
           text: "A stack is a linear data structure that follows the Last In First Out (LIFO) principle. This means that the last element added to the stack is the first one to be removed.",
         },
         {
           type: 'subheading',
           title: "2. Characteristics of Stacks",
+          image: 'https://picsum.photos/seed/picsum/450/300',
           text: "Stacks have several key characteristics, including the ability to perform operations such as push, pop, and peek.",
         },
         {
           type: 'subsubheading',
           title: "2.1 LIFO Principle",
+          image: 'https://picsum.photos/seed/picsum/450/300',
           text: "The LIFO principle ensures that the most recently added element is the first to be removed. This is analogous to a stack of plates; you can only take the top plate off.",
         },
         {

@@ -1,74 +1,22 @@
-// import React from 'react';
-// import { NavigationContainer } from '@react-navigation/native';
-// import { createStackNavigator } from '@react-navigation/stack';
-// import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
-// import { BackButton } from '../components/BackButton';
-// import Details from '../screens/details';
-// import DataStructuresScreen from '../screens/overview';
-// import CodeScreen from '../screens/codescreen';
-// import RecentScreen from 'screens/RecentScreen';
-// import { Text } from 'react-native';
-
-// // Define your tab navigator
-// const Tab = createBottomTabNavigator();
-// const Stack = createStackNavigator<RootStackParamList>();
-
-
-// const DiscussScreen = () => {
-//   return (
-//     <Text>Discuss Screen</Text>
-//   )
-// }
-
-// // Create a Tab Navigator
-// const TabNavigator = () => {
-//   return (
-//     <Tab.Navigator>
-//       <Tab.Screen name="RapidDSA" component={DataStructuresScreen} />
-//       <Tab.Screen name="Recent" component={RecentScreen} />
-//       <Tab.Screen name="Discuss" component={DiscussScreen} />
-
-//     </Tab.Navigator>
-//   );
-// };
-
-// // Main Stack Navigator
-// export default function RootStack() {
-//   return (
-//     <NavigationContainer>
-//       <Stack.Navigator initialRouteName="TabNavigator" >
-//         <Stack.Screen name="TabNavigator" component={TabNavigator} options={{ headerShown: false }} />
-//         <Stack.Screen 
-//           name="Details" 
-//           component={Details} 
-//           options={{ headerShown: false }} 
-//         />
-//       </Stack.Navigator>
-//     </NavigationContainer>
-//   );
-// }
-
-
-
 
 import React, { useEffect, useRef } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Animated, SafeAreaView, Text, TouchableOpacity, StyleSheet, View } from 'react-native';
-
-import { BackButton } from '../components/BackButton';
+import { Animated, SafeAreaView, Text, TouchableOpacity, StyleSheet, View, StatusBar as RNStatusBar } from 'react-native';
 import Details from '../screens/details';
 import DataStructuresScreen from '../screens/overview';
-import CodeScreen from '../screens/codescreen';
 import ProfileScreen from 'screens/profileScreen';
-import RecentScreen from '../screens/RecentScreen';
 import Icon, { Icons } from '../components/icons';
 import Colors from 'constants/Colors';
 import DiscussionScreen from 'screens/DiscussionScreen';
 import ProblemListScreen from 'screens/ProblemListScreen';
+import QuestionDetailScreen from 'screens/questionDetailScreen';
+import DiscussDetailScreen from 'screens/DiscussDetailScreen';
 
+import {
+  SafeAreaProvider,
+} from 'react-native-safe-area-context';
 
 // Define the Tab and Stack navigators
 const Tab = createBottomTabNavigator();
@@ -104,50 +52,23 @@ const TabArr = [
     route: 'Profile',
     label: 'Profile',
     type: Icons.FontAwesome,
-    activeIcon: 'user-circle', 
+    activeIcon: 'user-circle',
     inActiveIcon: 'user-circle-o',
     component: ProfileScreen,
   },
 ];
 
-// Tab button component
-// const TabButton = ({ item, onPress, accessibilityState }) => {
-//   const focused = accessibilityState.selected;
-//   const scaleValue = useRef(new Animated.Value(1)).current;
-
-//   useEffect(() => {
-//     Animated.spring(scaleValue, {
-//       toValue: focused ? 1.5 : 1,
-//       friction: 5,
-//       useNativeDriver: true,
-//     }).start();
-//   }, [focused]);
-
-//   return (
-//     <TouchableOpacity onPress={onPress} activeOpacity={1} style={styles.tabButtonContainer}>
-//       <Animated.View style={{ transform: [{ scale: scaleValue }] }}>
-//         <Icon
-//           type={item.type}
-//           name={focused ? item.activeIcon : item.inActiveIcon}
-//           color={focused ? Colors.primary : Colors.primaryLite}
-//         />
-//       </Animated.View>
-//     </TouchableOpacity>
-//   );
-// };
-
-
 const TabButton = ({ item, onPress, accessibilityState }) => {
   const focused = accessibilityState.selected;
   const scaleValue = useRef(new Animated.Value(1)).current;
 
-  // useEffect(() => {
-  //   Animated.spring(scaleValue, {
-  //     toValue: focused ? 1.5 : 1,
-  //     friction: 5,
-  //     useNativeDriver: true,
-  //   }).start();
-  // }, [focused]);
+  useEffect(() => {
+    Animated.spring(scaleValue, {
+      toValue: focused ? 1.1 : 1,
+      friction: 5,
+      useNativeDriver: true,
+    }).start();
+  }, [focused]);
 
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={1} style={styles.tabButtonContainer}>
@@ -206,49 +127,26 @@ const TabNavigator = () => {
 // Main Stack Navigator
 export default function RootStack() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="TabNavigator">
-        <Stack.Screen name="TabNavigator" component={TabNavigator} options={{ headerShown: false }} />
-        <Stack.Screen name="Details" component={Details} options={{ headerShown: false }} />
-      </Stack.Navigator>
-    </NavigationContainer>
+
+    <>
+      {/* Ensure the StatusBar is rendered properly */}
+      <RNStatusBar backgroundColor="white" barStyle="dark-content" />
+      <SafeAreaProvider>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="TabNavigator">
+            <Stack.Screen name="TabNavigator" component={TabNavigator} options={{ headerShown: false }} />
+            <Stack.Screen name="Details" component={Details} options={{ headerShown: false }} />
+            <Stack.Screen name="QuestionDetails" component={QuestionDetailScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="DiscussDetailScreen" component={DiscussDetailScreen} options={{ headerShown: false }} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </SafeAreaProvider>
+    </>
   );
 }
 
 // Styles
 const styles = StyleSheet.create({
-  // safeArea: {
-  //   flex: 1,
-  //   backgroundColor: 'white',
-  // },
-  // tabBarStyle: {
-  //   height: 60,
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  // },
-  // tabButtonContainer: {
-  //   flex: 1,
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  //   height: 60,
-  // },
-  // headerContainer: {
-  //   height: 60, // Set a fixed height for the header
-  //   justifyContent: 'center', // Center vertically
-  //   alignItems: 'center', // Center horizontally
-  //   backgroundColor: 'white', // Background color for the header
-  //   elevation: 2, // Optional: add shadow effect on Android
-  //   // shadowColor: 'rgba(0, 0, 0, 0.2)', // Optional: add shadow effect on iOS
-  //   // shadowOffset: { width: 0, height: 2 }, // Optional: shadow offset
-  //   shadowOpacity: 0.8, // Optional: shadow opacity
-  //   shadowRadius: 2, // Optional: shadow radius
-  // },
-  // headerText: {
-  //   fontSize: 20, // Adjust as needed
-  //   fontWeight: 'bold',
-  //   color: '#333', // Change text color
-  // },
-
   safeArea: {
     flex: 1,
     backgroundColor: 'white',
@@ -270,7 +168,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',  // You can adjust the font weight
   },
   headerContainer: {
-    height: 60, 
+    height: 60,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',

@@ -3,11 +3,11 @@ import { StyleSheet, Text, View, TouchableOpacity, Image, FlatList } from 'react
 import Icon from 'react-native-vector-icons/MaterialIcons'; // Import Material Icons or any other icon set you prefer
 
 const profileOptions = [
-  { id: '1', title: 'Edit Profile', icon: 'edit' },
+  // { id: '1', title: 'Edit Profile', icon: 'edit' },
   { id: '2', title: 'Bookmarks', icon: 'bookmark' },
   { id: '3', title: 'Request a Feature', icon: 'help-outline' },
   { id: '4', title: 'About Us', icon: 'info' },
-  { id: '5', title: 'Log Out', icon: 'logout' },
+  // { id: '5', title: 'Log Out', icon: 'logout' },
 ];
 
 export default function ProfileScreen() {
@@ -24,8 +24,8 @@ export default function ProfileScreen() {
           source={{ uri: 'https://via.placeholder.com/100' }} // Placeholder image
           style={styles.profileImage}
         />
-        <Text style={styles.userName}>John Doe</Text>
-        <Text style={styles.userEmail}>johndoe@example.com</Text>
+        <Text style={styles.userName}>Keshav Dutt Tripathi</Text>
+        <Text style={styles.userEmail}>Senior Software Engineer - Flipkart</Text>
       </View>
 
       {/* Profile Options */}
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1,
     borderColor: '#E0E0E0',
-    marginVertical: 5,
+    marginVertical: 6,
     flexDirection: 'row', // Align icon and text in a row
     alignItems: 'center',  // Center items vertically
   },

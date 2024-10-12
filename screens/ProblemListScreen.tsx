@@ -3,7 +3,7 @@ import { View, Text, FlatList, StyleSheet, Modal, TouchableOpacity, ScrollView }
 import CustomDropdown from 'components/customDropdown';
 import { MaterialIcons } from '@expo/vector-icons'; // Import MaterialIcons for the filter icon
 
-const ProblemListScreen = () => {
+const ProblemListScreen = ({navigation}) => {
     const [selectedTags, setSelectedTags] = useState([]);
     const [selectedCompany, setSelectedCompany] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
@@ -29,7 +29,7 @@ const ProblemListScreen = () => {
         { id: '18', problem: 'Binary tree inorder traversal', tags: ['Trees', 'Traversal'], company: 'Facebook' },
         { id: '19', problem: 'Path sum in a binary tree', tags: ['Trees', 'Depth First Search'], company: 'Microsoft' },
         { id: '20', problem: 'Climbing stairs', tags: ['Dynamic Programming', 'Recursion'], company: 'Amazon' },
-      ];
+    ];
 
     const tagOptions = ['Arrays', 'Sorting', 'Matrix', 'Backtracking', 'Stacks', 'Queues', 'Linked List'];
     const companyOptions = ['Google', 'Amazon', 'Facebook', 'Microsoft'];
@@ -42,19 +42,21 @@ const ProblemListScreen = () => {
     });
 
     const renderProblemItem = ({ item }) => (
-        <View style={styles.problemItem}>
-            <Text style={styles.problemText}>{item.problem}</Text>
-            <View style={styles.tagContainer}>
-                {item.tags.map((tag, index) => (
-                    <View key={index} style={styles.tag}>
-                        <Text style={styles.tagText}>{tag}</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('QuestionDetails')}>
+            <View style={styles.problemItem}>
+                <Text style={styles.problemText}>{item.problem}</Text>
+                <View style={styles.tagContainer}>
+                    {item.tags.map((tag, index) => (
+                        <View key={index} style={styles.tag}>
+                            <Text style={styles.tagText}>{tag}</Text>
+                        </View>
+                    ))}
+                    <View style={styles.companyTag}>
+                        <Text style={styles.companyTagText}>{item.company}</Text>
                     </View>
-                ))}
-                <View style={styles.companyTag}>
-                    <Text style={styles.companyTagText}>{item.company}</Text>
                 </View>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 
     // Handle tag selection
@@ -216,14 +218,15 @@ const styles = StyleSheet.create({
     problemItem: {
         backgroundColor: '#FFFFFF',
         padding: 15,
-        marginVertical: 8,
+        marginVertical: 6,
         borderRadius: 8,
         borderWidth: 1,
         borderColor: '#E0E0E0',
     },
     problemText: {
-        fontSize: 16,
+        fontSize: 14,
         color: '#333',
+        fontWeight: '400'
     },
     tagContainer: {
         flexDirection: 'row',

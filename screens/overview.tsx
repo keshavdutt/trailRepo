@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, SectionList, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, SectionList, StyleSheet, TouchableOpacity, Modal, Button, FlatList } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { DATA } from '../_mocks_/data'; // Adjust the path based on your folder structure
 
@@ -8,27 +8,32 @@ const DataStructuresScreen = ({ navigation }) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("Data Structures");
 
+  // State for controlling modal visibility
+  const [isModalVisible, setModalVisible] = useState(false);
+
   const items = [
     { label: 'Data Structures', value: 'Data Structures' },
     { label: 'Algorithms', value: 'Algorithms' },
     { label: 'System Design', value: 'System Design' },
-
-    
   ];
 
   // Set currentData based on selected view
-  const currentData = 
+  const currentData =
     value === "Algorithms" ? DATA.algorithms :
-    value === "System Design" ? DATA.systemDesign :
-    DATA.dataStructures;
+      value === "System Design" ? DATA.systemDesign :
+        DATA.dataStructures;
 
-
-  const handleNavigate = (path) => {
-    navigation.navigate('Details', { title: path });
+  // Show modal when locked question is pressed
+  const handleNavigate = (item) => {
+    if (item.locked) {
+      setModalVisible(true); // Show the modal if the item is locked
+    } else {
+      navigation.navigate('Details', { title: item.path });
+    }
   };
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity onPress={() => handleNavigate(item.path)}>
+    <TouchableOpacity onPress={() => handleNavigate(item)}>
       <View style={styles.item}>
         <View style={[styles.circle, { backgroundColor: item.color }]} />
         <Text style={styles.title}>{item.name}</Text>
@@ -44,6 +49,15 @@ const DataStructuresScreen = ({ navigation }) => {
       setOpen(false);
     }
   };
+
+  // List of premium benefits
+  const premiumBenefits = [
+    'Access to all locked questions',
+    'Exclusive solutions and explanations',
+    'AI-powered code analysis and feedback',
+    'Priority support from mentors',
+    'Early access to new features',
+  ];
 
   return (
     <View style={styles.container}>
@@ -72,6 +86,40 @@ const DataStructuresScreen = ({ navigation }) => {
         )}
       />
 
+      {/* Modal for subscription */}
+      <Modal
+        visible={isModalVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalTitle}>Premium Content</Text>
+            <Text style={styles.modalMessage}>
+              This question is locked. Subscribe to the premium membership for Rs 3000 per year to unlock this content.
+            </Text>
+
+            {/* Premium Benefits */}
+            <Text style={styles.benefitsTitle}>Premium Membership Benefits:</Text>
+            <FlatList
+              data={premiumBenefits}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={({ item }) => (
+                <View style={styles.benefitItem}>
+                  <Text style={styles.benefitText}>• {item}</Text>
+                </View>
+              )}
+            />
+
+            <View style={styles.modalButtonContainer}>
+              <Button title="Subscribe Now" onPress={() => console.log('Subscription Flow')} />
+              <Button title="Cancel" onPress={() => setModalVisible(false)} />
+            </View>
+          </View>
+        </View>
+      </Modal>
+
       <View style={styles.bottomSpacing} />
     </View>
   );
@@ -81,7 +129,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FAFAFA',
-    // paddingBottom: 20,
   },
   headerContainer: {
     padding: 15,
@@ -94,6 +141,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderColor: '#E0E0E0',
     zIndex: 20,
+    marginBottom: 5
   },
   dropdownContainer: {
     backgroundColor: '#FFFFFF',
@@ -121,14 +169,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   circle: {
-    width: 24,
-    height: 24,
+    width: 15,
+    height: 15,
     borderRadius: 12,
     marginRight: 15,
   },
   title: {
     fontSize: 16,
-    fontWeight: '500',
+    fontWeight: '400',
     color: '#333',
     flex: 1,
   },
@@ -138,6 +186,50 @@ const styles = StyleSheet.create({
   },
   bottomSpacing: {
     // height: 20,
+  },
+  // Modal styles
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContainer: {
+    width: 300,
+    padding: 20,
+    backgroundColor: '#FFF',
+    borderRadius: 10,
+    elevation: 5,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: '600',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  modalMessage: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  benefitsTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  benefitItem: {
+    marginBottom: 5,
+  },
+  benefitText: {
+    fontSize: 14,
+    textAlign: 'left',
+    color: '#555',
+  },
+  modalButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 20,
   },
 });
 
